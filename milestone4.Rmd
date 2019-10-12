@@ -1,0 +1,42 @@
+---
+title: "Milestone 4"
+author: "Angela Fu"
+date: "10/11/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+```
+
+## Plot
+```{r data, include=FALSE}
+
+#read in data
+
+data <- read.csv("data/schedule_a-2019-10-11T22_44_13.csv")%>%
+  
+  #choose pertinent columns to be examined so as to better analyze the dataframe
+  
+  select(committee_name,contribution_receipt_amount)
+
+#this creates a separate data frame of frequencies for the designated variable
+
+data2 <- as.data.frame(table(data$committee_name))%>%
+  arrange(desc(Freq))%>%
+  
+  #filter only for Democratic Presidential candidates
+  
+  filter(Var1 == "BERNIE 2020"|Var1 == "KAMALA HARRIS FOR THE PEOPLE"|Var1 == "BIDEN FOR PRESIDENT"|Var1 == "WARREN FOR PRESIDENT, INC."|Var1 == "BETO FOR AMERICA")
+```
+
+```{r plot}
+ggplot(data2, aes(x=Var1,y=Freq,fill=Var1))+
+  geom_bar(stat="identity")+
+  labs(x="Democratic Presidential Candidate",
+       y="Number of Donations",
+       title="Number of Donations from Alabama Residents to Top 5 Democratic Presidential Candidates")+
+  theme(axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+```
